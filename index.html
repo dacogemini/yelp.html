@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Yelp Fusion</title>
+      <!-- JQUERY -->
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+      <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
+      <!-- BOOTSTRAP -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+        crossorigin="anonymous">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+        crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+      <!-- Jumbotron for Title -->
+      <div class="jumbotron" style="background-color: rgb(73, 46, 65) ; color: white;">
+        <h1 class="text-center">
+          <strong>
+            <i class="fas fa-utensils fa-2x"></i> <h1>YUMMY!</h1></strong>
+        </h1>
+      </div>
+      <div class="form-group">
+        <label for="search">
+          <h3>Enter a City &nbsp
+            <i class="fas fa-map-marker-alt"></i>
+          </h3>
+        </label>
+        <input type="text" class="form-control" id="userInput" placeholder="Example: Chicago">
+        <br>
+        <button type="button" class="btn btn-dark" id="getQuote">Search</button>
+        <br>
+        <br>
+        <div id="info"></div>
+        <div id="venue">PLACES</div>
+      </div>
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script>
+// DOC READY 
+  $(function () {
+
+    $("#getQuote").on("click", function () {  // <- $(document).on("click", function(event){
+          var accessToken = "3uLaVQrJwP21kaJjuErLNk5QE9TTtwtFA7LErPkhI32wZg6PYKUll05F-9_fkoK45CnUZ6qyVOXkvHGjRK-9ajm-CtR9J3r7d5zMfcl72IUJbtLy8yUpSZ-uHlpmWnYx"
+          var city = $("#userInput").val();  // <- The city variable will hold the results we get from the user's inputs via HTML
+          var queryURL = "https://api.yelp.com/v3/businesses/search?&location=" + city;
+//  getQuote(); // <- CALL GETQUOTE() FUNCTION    
+// =============================================================================
+/** AJAX PREFILTER -- DO NOT CHANGE ----------------------------------------v */ 
+    jQuery.ajaxPrefilter(function (options) {
+      if (options.crossDomain && jQuery.support.cors) {  
+        options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
+      }
+    });
+/** AJAX PREFILTER -- DO NOT CHANGE ----------------------------------------^ */ 
+// =============================================================================
+// AJAX CALL 
+    $.ajax({
+      type: "GET",
+      url: "https://api.yelp.com/v3/businesses/search?&location=" + city,
+      dataType: "json",
+      headers: {
+        "Authorization": "Bearer " +
+        "3uLaVQrJwP21kaJjuErLNk5QE9TTtwtFA7LErPkhI32wZg6PYKUll05F-9_fkoK45CnUZ6qyVOXkvHGjRK-9ajm-CtR9J3r7d5zMfcl72IUJbtLy8yUpSZ-uHlpmWnYx"
+      },
+      success: function (response) {
+       // console.log(response.businesses);
+        //  $("#info").text(JSON.stringify(obj)); // <- STRINGIFY & PUT IN #INFO
+          for (var i= 0; i < response.businesses.length; i++) {
+           
+            var obj = response.businesses[i];
+              console.log(obj);
+              
+          }
+       //   $("#info").text(JSON.stringify(obj)); // <- STRINGIFY & PUT IN #INFO
+       //   $("#info").text(obj);
+          },
+       
+      })
+    })
+  })
+
+    
+    /*
+       "access_token": "3uLaVQrJwP21kaJjuErLNk5QE9TTtwtFA7LErPkhI32wZg6PYKUll05F-9_fkoK45CnUZ6qyVOXkvHGjRK-9ajm-CtR9J3r7d5zMfcl72IUJbtLy8yUpSZ-uHlpmWnYx",
+       "expires_in": 630826370,
+       "token_type": "Bearer" */
+
+    
+</script>
